@@ -1,0 +1,56 @@
+\documentclass[class=article,crop=false]{standalone}
+
+\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+
+\usepackage{amsmath}
+\usepackage{setspace}
+
+\newenvironment{bcases}{%
+    \left[
+    \renewcommand{\arraystretch}{1.2}%
+    \array{@{}l@{\quad}l@{}}
+    }
+    {\endarray\right.}
+
+\onehalfspacing
+\begin{document}
+    \section*{Задание 3}
+    Вычислить значения HITS для данного графа с $n$ уровнями.
+
+    \begin{figure*}[h]
+        \centering
+        \subimport{./}{graph.tex}
+    \end{figure*}
+
+    \noindent Рассмотрим матрицу смежности графа $\mathbf{M}$ ($k\times k$, где $k=\sum\limits_{i=1}^n 2^{i-1}$):
+    \begin{gather*}
+        m_{ij}=
+        \begin{cases}
+            1,&\text{если $i=j=1$, или $j=2i$, или $j=2i+1$}\\
+            0&\text{в остальных случаях}
+        \end{cases}
+    \end{gather*}
+
+    \noindent Пользуясь нашим алгоритмом получаем ответ:
+    \begin{gather*}
+        \mathrm{h}=
+        \begin{pmatrix}
+            1      \\
+            0      \\
+            0      \\
+            0      \\
+            \vdots \\
+            0
+        \end{pmatrix},\quad
+        \mathrm{a}=
+        \begin{pmatrix}
+            1/\sqrt{3} \\
+            1/\sqrt{3} \\
+            1/\sqrt{3} \\
+            0          \\
+            \vdots     \\
+            0
+        \end{pmatrix}
+    \end{gather*}
+\end{document}

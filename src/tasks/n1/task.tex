@@ -1,0 +1,152 @@
+\documentclass[class=article,crop=false]{standalone}
+
+\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+
+\usepackage{amsmath}
+\usepackage{multicol}
+\usepackage{setspace}
+
+\newenvironment{bcases}{%
+    \left[
+    \renewcommand{\arraystretch}{1.2}%
+    \array{@{}l@{\quad}l@{}}
+    }
+    {\endarray\right.}
+
+\onehalfspacing
+\begin{document}
+    \section*{Задание 1}
+    Вычислить значения HITS (<<hubs and authorities>>) для данного графа.
+
+    \begin{figure*}[h]
+        \centering
+        \subimport{./}{graph.tex}
+    \end{figure*}
+
+    \begin{multicols}{2}
+        \noindent Рассмотрим матрицу смежности графа $\mathbf{M}$ и~транспонированную $\mathbf{M^T}$:
+        \begin{gather*}
+            \mathrm{M}=
+            \begin{pmatrix}
+                1 & 1 & 1 \\
+                1 & 0 & 1 \\
+                0 & 1 & 1
+            \end{pmatrix},
+            \quad
+            \mathrm{M^T}=
+            \begin{pmatrix}
+                1 & 1 & 0 \\
+                1 & 0 & 1 \\
+                1 & 1 & 1
+            \end{pmatrix}
+        \end{gather*}
+
+        \noindent\textbf{Шаг~0.} Зададим начальные значения векторов <<каталожности>> (<<hubbiness>>) $\mathbf{h}$ и <<авторитетности>> (<<authority>>) $\mathbf{a}$ таким образом, чтобы $\mathrm{h}_0\left( i\right) =\mathrm{a}_0\left( i\right) =1$ для любой вершины $i$.
+
+        \noindent\textbf{Шаг~1.} Вычислим новые значения $\mathbf{h}$ и~$\mathbf{a}$:
+        \begin{gather*}
+            \begin{cases}
+                \mathrm{h}_k=\phi_k\mathrm{M}\mathrm{a}_{k-1}\\
+                \mathrm{a}_k=\psi_k\mathrm{M^T}\mathrm{h}_{k-1}
+            \end{cases}
+            \rightarrow\quad
+            \begin{cases}
+                \mathrm{h}_k=\phi_k\psi_{k-1}\mathrm{M M^T}\mathrm{h}_{k-2}\\
+                \mathrm{a}_k=\phi_{k-1}\psi_k\mathrm{M^T M}\mathrm{a}_{k-2}
+            \end{cases}
+        \end{gather*}
+        где $\phi_k$ и~$\psi_k$ --- такие числа, что для любого $k>1$ верно
+        $\left|\phi_k\mathrm{M}\mathrm{a}_{k-1}\right| =\left|\psi_k\mathrm{M^T}\mathrm{h}_{k-1}\right| =1$.
+
+        Мы видим, что $\mathbf{h}$ и $\mathbf{a}$ --- собственные векторы матриц $\mathbf{M M^T}$ и $\mathbf{M^T M}$ соответственно.
+
+        \noindent\textbf{Шаг~2.} Рассмотрим $\mathbf{M M^T}$ и~$\mathbf{M^T M}$:
+        \begin{gather*}
+            \mathrm{M M^T}=
+            \begin{pmatrix}
+                3 & 2 & 2 \\
+                2 & 2 & 1 \\
+                2 & 1 & 2
+            \end{pmatrix},
+            \quad
+            \mathrm{M^T M}=
+            \begin{pmatrix}
+                2 & 1 & 2 \\
+                1 & 2 & 2 \\
+                2 & 2 & 3
+            \end{pmatrix}
+        \end{gather*}
+
+        \noindent Полученные матрицы симметричны и положительно определены, следовательно их собственные значения положительны. Значит векторы $\mathbf{h}$ и~$\mathbf{a}$ сходятся к собственным векторам матриц  $\mathbf{M M^T}$ и $\mathbf{M^T M}$, соответсвующим их наибольшим собственным значениям.
+        \vfill\null\columnbreak
+
+        Найдём эти собственные векторы:
+        \begin{align*}
+            \left|\mathrm{M M^T}-\lambda\mathrm{E}\right| &=
+            \begin{vmatrix}
+                3-\lambda & 2         & 2         \\
+                2         & 2-\lambda & 1         \\
+                2         & 1         & 2-\lambda
+            \end{vmatrix}=0,\\
+            \left|\mathrm{M^T M}-\mu\mathrm{E}\right| &=
+            \begin{vmatrix}
+                2-\mu & 1     & 2     \\
+                1     & 2-\mu & 2     \\
+                2     & 2     & 3-\mu
+            \end{vmatrix}=0
+        \end{align*}
+
+        \noindent Не трудно заметить, что решения обоих уравнений получатся одинаковые:
+        \begin{gather*}
+            \begin{bcases}
+                \lambda_1=\mu_1=1\\
+                \lambda_2=\mu_2=3-2\sqrt{2}\\
+                \lambda_3=\mu_3=3+2\sqrt{2}
+            \end{bcases}
+        \end{gather*}
+
+        \noindent\textbf{Шаг~3.1.} Решим уравнение $\left(\mathbf{M M^T}-\lambda\mathbf{E}\right)\mathbf{h}=0$, подставив $\lambda=\lambda_3=3+2\sqrt{2}$:
+        \begin{gather*}
+            \begin{pmatrix}
+                -2\sqrt{2} & 2            & 2            \\
+                2          & -1-2\sqrt{2} & 1            \\
+                2          & 1            & -1-2\sqrt{2}
+            \end{pmatrix}\mathrm{h}=
+            \begin{pmatrix}
+                0 \\
+                0 \\
+                0
+            \end{pmatrix}
+            \longrightarrow\\
+            \mathrm{h}=
+            \begin{pmatrix}
+                \sqrt{2}/2 \\
+                1/2        \\
+                1/2
+            \end{pmatrix}
+        \end{gather*}
+
+        \noindent\textbf{Шаг~3.2.} Решим уравнение $\left(\mathbf{M^T M}-\mu\mathbf{E}\right)\mathbf{a}=0$, подставив $\mu=\mu_3=3+2\sqrt{2}$:
+        \begin{gather*}
+            \begin{pmatrix}
+                -1-2\sqrt{2} & 1            & 2          \\
+                1            & -1-2\sqrt{2} & 2          \\
+                2            & 2            & -2\sqrt{2}
+            \end{pmatrix}\mathrm{a}=
+            \begin{pmatrix}
+                0 \\
+                0 \\
+                0
+            \end{pmatrix}
+            \longrightarrow\\
+            \mathrm{a}={
+                \begin{pmatrix}
+                    1/2 \\
+                    1/2 \\
+                    \sqrt{2}/2
+                \end{pmatrix}
+            }
+        \end{gather*}
+    \end{multicols}
+\end{document}

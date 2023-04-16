@@ -1,0 +1,85 @@
+\documentclass[class=article,crop=false]{standalone}
+
+\usepackage[subpreambles=true]{standalone}
+\usepackage{import}
+
+\usepackage{amsmath}
+\usepackage{setspace}
+
+\newenvironment{bcases}{%
+    \left[
+    \renewcommand{\arraystretch}{1.2}%
+    \array{@{}l@{\quad}l@{}}
+    }
+    {\endarray\right.}
+
+\onehalfspacing
+\begin{document}
+    \section*{Задание 2}
+    Вычислить значения HITS для данного графа с $m$ вершинами.
+
+    \begin{figure*}[h]
+        \centering
+        \subimport{./}{graph.tex}
+    \end{figure*}
+
+    \noindent Рассмотрим матрицу смежности графа $\mathbf{M}$ ($m\times m$) и~транспонированную $\mathbf{M^T}$:
+    \begin{gather*}
+        \mathrm{M}=
+        \begin{pmatrix}
+            1      & 1      & 0      & \cdots & 0      \\
+            0      & 0      & 1      & \cdots & 0      \\
+            \vdots & \vdots & \vdots & \ddots & \vdots \\
+            0      & 0      & 0      & \cdots & 1      \\
+            0      & 0      & 0      & \cdots & 0
+        \end{pmatrix},\quad
+        \mathrm{M^T}=
+        \begin{pmatrix}
+            1      & 0      & \cdots & 0      & 0      \\
+            1      & 0      & \cdots & 0      & 0      \\
+            0      & 1      & \cdots & 0      & 0      \\
+            \vdots & \vdots & \ddots & \vdots & \vdots \\
+            0      & 0      & \cdots & 0      & 0
+        \end{pmatrix}
+    \end{gather*}
+
+    \noindent Теперь рассмотрим произведения $\mathbf{M M^T}$ и~$\mathbf{M^T M}$:
+    \begin{gather*}
+        \mathrm{M M^T}=
+        \begin{pmatrix}
+            2      & 0      & \cdots & 0      & 0      \\
+            0      & 1      & \cdots & 0      & 0      \\
+            \vdots & \vdots & \ddots & \vdots & \vdots \\
+            0      & 0      & \cdots & 1      & 0      \\
+            0      & 0      & \cdots & 0      & 0
+        \end{pmatrix},\quad
+        \mathrm{M^T M}=
+        \begin{pmatrix}
+            1      & 1      & 0      & \cdots & 0      \\
+            1      & 1      & 0      & \cdots & 0      \\
+            0      & 0      & 1      & \cdots & 0      \\
+            \vdots & \vdots & \vdots & \ddots & \vdots \\
+            0      & 0      & 0      & \cdots & 1
+        \end{pmatrix}
+    \end{gather*}
+
+    \noindent Пользуясь рассмотренным при решении предыдущего задания алгоритмом получаем ответ:
+    \begin{gather*}
+        \mathrm{h}=
+        \begin{pmatrix}
+            1      \\
+            0      \\
+            0      \\
+            \vdots \\
+            0
+        \end{pmatrix},\quad
+        \mathrm{a}=
+        \begin{pmatrix}
+            \sqrt{2}/2 \\
+            \sqrt{2}/2 \\
+            0          \\
+            \vdots     \\
+            0
+        \end{pmatrix}
+    \end{gather*}
+\end{document}
