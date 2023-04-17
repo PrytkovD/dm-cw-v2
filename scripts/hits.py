@@ -61,8 +61,12 @@ def main():
         h = u / np.linalg.norm(u)
         a = v / np.linalg.norm(v)
 
+    print("Through iteration:")
     print('h = ({})'.format(', '.join('{:.8f}'.format(float(i)) for i in h)))
     print('a = ({})'.format(', '.join('{:.8f}'.format(float(i)) for i in a)))
+    print("Through eigenvalue extraction via numpy:")
+    print('h = ({})'.format(', '.join('{:.8f}'.format(float(i)) for i in np.transpose(np.linalg.eig(MxMT)[1])[0])))
+    print('a = ({})'.format(', '.join('{:.8f}'.format(float(i)) for i in np.transpose(np.linalg.eig(MTxM)[1])[0])))
 
 
 if __name__ == '__main__':
