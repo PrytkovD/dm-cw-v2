@@ -32,22 +32,26 @@ def task3_adj_mat(n: int):
     return M
 
 
-if __name__ == '__main__':
-    n = 2
-    m = 5
+def main():
+    task = input("Which task to run? (1, 2, or 3)")
 
-    # M = task1_adj_mat()
-    # M = task2_adj_mat(m)
-    M = task3_adj_mat(n)
+    if task == '1':
+        M = task1_adj_mat()
+    elif task == '2':
+        n = int(input("How many vertices are in the graph?"))
+        M = task2_adj_mat(n)
+    elif task == '3':
+        n = int(input("How many levels are in the tree?"))
+        M = task3_adj_mat(n)
+    else:
+        return
+
     MT = np.transpose(M)
-
-    m = len(M)
-
-    print(m)
 
     MxMT = np.matmul(M, MT)
     MTxM = np.matmul(MT, M)
 
+    m = len(M)
     h = np.ones((m, 1))
     a = np.ones((m, 1))
 
@@ -57,5 +61,9 @@ if __name__ == '__main__':
         h = u / np.linalg.norm(u)
         a = v / np.linalg.norm(v)
 
-    print(', '.join('{:.8f}'.format(float(i)) for i in h))
-    print(', '.join('{:.8f}'.format(float(i)) for i in a))
+    print('h = ({})'.format(', '.join('{:.8f}'.format(float(i)) for i in h)))
+    print('a = ({})'.format(', '.join('{:.8f}'.format(float(i)) for i in a)))
+
+
+if __name__ == '__main__':
+    main()
