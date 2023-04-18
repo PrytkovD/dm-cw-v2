@@ -21,7 +21,7 @@ def task2_adj_mat(m: int):
 
 
 def task3_adj_mat(n: int):
-    m = sum(pow(2, i - 1) for i in range(1, n + 1))
+    m = int(pow(2, n) - 1)
 
     M = np.empty((m, m))
 
